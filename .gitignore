@@ -1,0 +1,6 @@
+# В репозиторий идут только файлы сайта
+*
+!.gitignore
+!index.html
+!logo.png
+!car-cut.webp

@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blackton — тонировка и детейлинг в Йошкар-Оле</title>
+<meta name="description" content="Тонировка, антигравийная плёнка, полировка, химчистка, шумоизоляция и автозвук. Йошкар-Ола, Комсомольская, 9.">
+<meta name="theme-color" content="#1B1B1B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;600&family=Oswald:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1B1B1B; --card:#262626; --text:#FFFFFF; --muted:#A3A3A3;
+  --accent:#B8CE0A; --warn:#FF5A36; --light:#F4F4F0;
+  --g:16px;
+  --head:"Oswald", Impact, sans-serif;
+  --body:"Golos Text", system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font:400 16px/1.5 var(--body);overflow-x:clip}
+a{color:inherit}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid #fff;outline-offset:4px}
+
+/* кнопка: скошенный фон повторяет наклон логотипа */
+.btn{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:48px;padding:0 24px;font:600 15px/1 var(--body);color:#141414;text-decoration:none;border:0;background:none;cursor:pointer;white-space:nowrap}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--accent);transform:skewX(-14deg);border-radius:3px;transition:transform .2s}
+.btn:hover::before{transform:skewX(-14deg) scaleX(1.04)}
+
+/* ===== первый экран ===== */
+.hero-track{position:relative}
+.hero{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;
+  display:grid;grid-template-columns:100%;
+  grid-template-rows:auto auto 1fr auto auto;
+  grid-template-areas:"hdr" "slogan" "stage" "tint" "lead";
+  padding-bottom:max(20px, env(safe-area-inset-bottom))}
+
+.hdr{grid-area:hdr;position:relative;z-index:3;display:flex;align-items:center;gap:8px;padding:14px var(--g)}
+.logo{--h:40px;display:block;height:var(--h);width:calc(var(--h)*575/280);flex:none;
+  background:url(logo.png) no-repeat;background-size:calc(var(--h)*640/280);
+  background-position:calc(var(--h)*-30/280) calc(var(--h)*-160/280)}
+.hdr-phone{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:44px;min-height:44px;
+  text-decoration:none;font-weight:600;font-size:15px}
+.hdr-phone svg{width:20px;height:20px}
+.hdr-phone span{display:none}
+.hdr .btn{min-height:44px;padding:0 18px;font-size:14px}
+
+.slogan{grid-area:slogan;position:relative;z-index:2;padding:4px var(--g) 0;
+  font:700 19px/1.1 var(--head);color:var(--text)}
+.slogan br{display:none}
+
+.stage{grid-area:stage;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0}
+.globe{position:absolute;left:50%;top:50%;width:min(135vw,125svh);aspect-ratio:1;transform:translate(-50%,-50%);
+  stroke:#3a3d33;fill:none;opacity:.55;pointer-events:none}
+.word{--fs:min(calc((100vw - 2*var(--g)) / 5.06), 29svh);
+  position:relative;font:700 var(--fs)/.82 var(--head);letter-spacing:-.005em;text-transform:uppercase;white-space:nowrap;
+  background:linear-gradient(180deg,rgba(255,255,255,.83) 8%,rgba(255,255,255,.12) 92%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;padding-top:.04em}
+.car-wrap{position:relative;width:min(100vw,960px,calc(100svh * .95));margin-top:calc(var(--fs, 60px) * -.35)}
+.stage{--fs:min(calc((100vw - 2*var(--g)) / 5.06), 29svh)}
+/* свет снизу */
+.car-wrap::before{content:"";position:absolute;left:-6%;right:-6%;bottom:-16%;height:46%;
+  background:radial-gradient(closest-side,rgba(184,206,10,.5),rgba(184,206,10,.16) 55%,transparent);pointer-events:none}.car{position:relative;display:block;width:100%;height:auto;filter:brightness(.52) contrast(1.15) saturate(.5);transform-origin:92% 85%} /* ось наклона — заднее колесо */
+/* заезд: класс ставит JS; задержка .3s, иначе заезд пройдёт под шторкой */
+.car-go .car{animation:car-in 1.6s .3s both}
+@keyframes car-in{
+  0%{translate:14% 0;rotate:0deg;animation-timing-function:cubic-bezier(.3,.4,.3,1)}
+  60%{translate:0 0;rotate:0deg;animation-timing-function:ease-out}
+  74%{translate:0 0;rotate:-.7deg;animation-timing-function:ease-in-out}
+  90%{translate:0 0;rotate:.15deg;animation-timing-function:ease-in-out}
+  100%{translate:0 0;rotate:0deg}
+}#tint,#haze{transition:opacity .25s linear}
+
+.tint{grid-area:tint;position:relative;z-index:2;padding:14px var(--g) 0}
+.tint-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.tint-label{font-size:14px;color:var(--muted);line-height:1.3}
+.counter{font:700 52px/1 var(--head);color:var(--accent);font-variant-numeric:tabular-nums;letter-spacing:-.01em;transition:color .2s}
+.counter.low{color:var(--warn)}
+.counter small{font-size:.5em;margin-left:2px}
+
+.range{-webkit-appearance:none;appearance:none;display:block;width:100%;height:40px;background:transparent;cursor:pointer;touch-action:pan-y}
+.range::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,#050505,rgba(255,255,255,.62))}
+.range::-moz-range-track{height:6px;border-radius:3px;background:linear-gradient(90deg,#050505,rgba(255,255,255,.62))}
+.range::-webkit-slider-thumb{-webkit-appearance:none;width:38px;height:38px;margin-top:-16px;border:0;background:var(--star) center/contain no-repeat}
+.range::-moz-range-thumb{width:38px;height:38px;border:0;background:var(--star) center/contain no-repeat}
+:root{--star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon transform='skewX(-10) translate(9 0)' fill='%23B8CE0A' stroke='%231B1B1B' stroke-width='3' stroke-linejoin='round' points='50,2 59,37 96,35 65,55 78,89 50,66 22,89 35,55 4,35 41,37'/%3E%3C/svg%3E")}
+.range:focus-visible{outline-offset:2px}
+
+.scale{position:relative;height:18px;font-size:12px;color:var(--muted)}
+.scale span{position:absolute;top:0}
+.scale span:first-child{left:0}
+.scale span:last-child{right:0}
+/* 70% на шкале 5–100 с поправкой на ширину ручки */
+.scale .m70{left:calc(68.42% - 6px);transform:translateX(-50%);color:#fff}
+.scale .m70::before{content:"";position:absolute;left:50%;bottom:100%;width:1px;height:12px;background:#fff;margin-bottom:2px}
+
+.warn{min-height:20px;margin-top:6px;font-size:14px;font-weight:600;color:var(--warn);opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s}
+.warn.on{opacity:1;transform:none}
+
+.lead{grid-area:lead;position:relative;z-index:2;padding:10px var(--g) 0;display:grid;gap:14px;justify-items:start}
+.lead p{color:var(--muted);font-size:15px;max-width:38ch}
+.lead em{font-style:normal;color:var(--accent);font-weight:600}
+
+/* ===== блоки ===== */
+.sec{position:relative;padding:72px max(var(--g), calc((100vw - 1600px) / 2))}
+.line{border-top:1px solid #2c2c2c}
+.kicker{display:flex;align-items:baseline;gap:10px;font-size:clamp(18px,1.6vw,24px);line-height:1.2;color:var(--muted);margin-bottom:14px}
+.h2{font:700 clamp(38px,6.2vw,92px)/.95 var(--head);letter-spacing:-.01em;max-width:14ch}
+.sec-lead{margin-top:16px;color:var(--muted);max-width:44ch}
+.tag{display:inline-block;margin-left:8px;padding:5px 8px;font:600 11px/1 var(--body);color:var(--muted);border:1px dashed #5e5e5e;border-radius:3px;vertical-align:middle;white-space:nowrap}
+/* услуги */
+.svc-list{list-style:none;margin-top:36px;border-top:1px solid #333}
+.svc-item{display:grid;align-content:start;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;padding:18px 0;border-bottom:1px solid #333}
+.svc-item h3{font:700 25px/1.15 var(--head)}
+.svc-item p{grid-column:1;color:var(--muted);font-size:15px;margin-top:4px}
+.svc-go{grid-column:2;grid-row:1/3;align-self:center;color:var(--accent);display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;min-height:44px;
+  font-weight:600;font-size:14px;text-decoration:none;border:1px solid #474747;border-radius:4px}
+.svc-go span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.svc-go:hover{border-color:#fff}
+.svc-main h3{font-size:36px}
+
+/* работы */
+.works-grid{margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.w{margin:0;display:flex;flex-direction:column;background:var(--card);border-radius:4px;overflow:hidden}
+.w figcaption{padding:10px 12px 12px;font-size:13px;color:var(--muted)}
+.w-ba{grid-column:1/-1}
+.ba{flex:1;display:grid;grid-template-columns:1fr;gap:2px;min-height:0}
+.ba div{position:relative;min-height:0}
+.ba img{display:block;width:100%;height:100%;aspect-ratio:4/3;object-fit:cover;background:#222}
+.ba b{position:absolute;left:8px;top:8px;padding:7px 10px;font:600 12px/1 var(--body);background:rgba(27,27,27,.85);border-radius:3px}
+.ph{flex:1;aspect-ratio:4/3;display:grid;place-content:center;gap:6px;padding:12px;text-align:center;font-size:12px;color:var(--muted);
+  background:repeating-linear-gradient(135deg,#262626 0 12px,#222 12px 24px)}
+.ph b{font:700 15px/1 var(--head);color:#cfcfcf}
+
+/* цены */
+.price-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px 40px}
+.price-top .sec-lead{max-width:36ch}
+.price-list{list-style:none;margin-top:32px;border-top:1px solid #333}
+.price-list li{display:flex;align-items:baseline;gap:10px;padding:15px 0;border-bottom:1px solid #333}
+.price-list .dots{flex:1;min-width:12px;border-bottom:1px dotted #555;transform:translateY(-4px)}
+.price-list .val{font:700 20px/1 var(--head);white-space:nowrap;color:var(--accent)}
+.price-list .tag{margin-left:6px}
+
+/* плёнки */
+.films{background:var(--card)}
+.films .h2{font-size:clamp(28px,3.4vw,48px)}
+.film-names{list-style:none;margin-top:28px}
+.film-names li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px solid #3a3a3a;font:700 clamp(42px,7vw,120px)/1 var(--head)}
+.film-names small{font:400 13px/1 var(--body);color:var(--muted)}
+.mats{list-style:none;margin-top:36px;display:grid;gap:22px}
+.mats b{display:block;font:700 22px/1.2 var(--head)}
+.mats p{color:var(--muted);margin-top:4px}
+/* вопросы */
+.faq-list{margin-top:28px;border-top:1px solid #333}
+.faq-list details{border-bottom:1px solid #333}
+.faq-list summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:44px;padding:18px 0;font:700 22px/1.2 var(--head)}
+.faq-list summary::-webkit-details-marker{display:none}
+.faq-list summary::after{content:"+";flex:none;font:400 30px/1 var(--body);color:var(--muted);transition:transform .2s}
+.faq-list details[open] summary::after{transform:rotate(45deg)}
+.faq-a{display:grid;gap:10px;padding:0 0 22px;color:#d4d4d4;max-width:68ch}
+
+/* заявка */
+.order{background:var(--light);color:#1b1b1b;display:grid;gap:28px;grid-template-areas:"head" "body" "phone"}
+.order-head{grid-area:head}.order-body{grid-area:body;position:relative;z-index:1}.phone{grid-area:phone}
+.order .kicker{color:#5c5c5c}
+.order .sec-lead{color:#4a4a4a}
+.of{display:grid;gap:14px}
+.of label{display:grid;gap:6px;font-weight:600;font-size:14px}
+.of input,.of select{width:100%;min-height:52px;padding:0 14px;font:400 16px var(--body);color:#1b1b1b;background:#fff;border:1px solid #c6c6bf;border-radius:4px}
+.of select{-webkit-appearance:none;appearance:none;padding-right:40px;
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231b1b1b' stroke-width='1.6'/%3E%3C/svg%3E") right 16px center/12px no-repeat}
+.of input:focus,.of select:focus{outline:2px solid #1b1b1b;outline-offset:1px;border-color:#1b1b1b}
+.of [aria-invalid="true"]{border-color:#b3261e}
+.ferr{min-height:18px;font-size:13px;font-weight:400;color:#b3261e}
+.ferr:empty{display:none}
+.of .btn{justify-self:start;margin-top:6px}
+.btn-dark{color:#fff}
+.btn-dark::before{background:#262626}
+.btn-dark i{width:22px;height:22px;background:var(--star) center/contain no-repeat}
+.demo-note{font-size:13px;color:#5c5c5c;max-width:46ch}
+.done{display:grid;gap:14px;justify-items:start}
+.done p{color:#4a4a4a;max-width:40ch}
+.link-btn{min-height:44px;font:600 15px var(--body);color:#1b1b1b;background:none;border:0;border-bottom:1px solid #1b1b1b;cursor:pointer;padding:0}
+
+.phone{justify-self:center;width:min(100%,300px);height:236px;padding:10px 10px 0;background:#0e0e0e;border-radius:38px 38px 0 0;box-shadow:0 30px 60px -30px rgba(0,0,0,.45);scroll-margin-bottom:16px}
+.phone-screen{height:100%;display:flex;flex-direction:column;overflow:hidden;color:#fff;background:#161616;border-radius:29px 29px 0 0}
+.chat-head{display:flex;align-items:center;gap:10px;padding:22px 16px 12px;border-bottom:1px solid #2a2a2a}
+.chat-ava{flex:none;width:34px;height:34px;border-radius:50%;background:#262626 var(--star) 50% 50%/62% no-repeat}
+.chat-name{font-weight:600;font-size:14px;line-height:1.2}
+.chat-sub{display:block;font-size:12px;font-weight:400;color:var(--muted)}
+.chat{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;padding:14px}
+.chat-empty{margin:auto;max-width:20ch;text-align:center;font-size:13px;color:#a3a3a3}
+.bubble{align-self:flex-end;max-width:88%;padding:10px 12px 8px;font-size:14px;line-height:1.35;background:#2c2c2c;border-radius:16px 16px 4px 16px;overflow-wrap:anywhere;
+  opacity:0;transform:translateY(14px) scale(.96);transition:opacity .35s,transform .35s}
+.bubble.in{opacity:1;transform:none}
+.bubble span{display:block;margin-top:4px;text-align:right;font-size:11px;color:#b0b0b0}
+.fly-star{position:fixed;z-index:50;width:30px;height:30px;background:var(--star) center/contain no-repeat;pointer-events:none}
+
+/* контакты */
+.big-num{display:inline-block;margin-top:6px;font:700 clamp(66px,17vw,250px)/.9 var(--head);letter-spacing:-.01em;white-space:nowrap;text-decoration:none}
+.big-num span{margin:0 .06em;font-size:.45em;vertical-align:.4em;color:var(--accent)}
+.c-grid{margin-top:36px;display:grid;gap:26px}
+.c-item h3{margin-bottom:6px;font-size:13px;font-weight:400;color:var(--muted)}
+.c-item p,.c-item li{font-size:18px}
+.c-item ul{list-style:none}
+.c-item a{text-decoration-color:#5e5e5e;text-underline-offset:4px}
+.c-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.pill{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid #474747;border-radius:4px;font-weight:600;text-decoration:none}
+.pill:hover{border-color:#fff}
+.map{margin-top:32px;aspect-ratio:4/3;background:var(--card);border-radius:4px;overflow:hidden}
+.map iframe{display:block;width:100%;height:100%;border:0;filter:invert(.9) hue-rotate(180deg) saturate(.7) contrast(.9)}
+
+.foot{display:grid;gap:10px;padding:36px var(--g) calc(110px + env(safe-area-inset-bottom));border-top:1px solid #2c2c2c;font-size:13px;color:var(--muted)}
+.foot strong{color:var(--text);font-weight:600}
+
+/* нижняя панель на телефоне */
+.mbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;display:flex;gap:8px;padding:8px;
+  background:rgba(27,27,27,.94);border:1px solid #333;border-radius:8px;transform:translateY(150%);visibility:hidden;transition:transform .3s,visibility .3s}
+.mbar.on{transform:none;visibility:visible}
+.mbar > a{flex:1}
+.mbar-call{display:inline-flex;align-items:center;justify-content:center;min-height:48px;border:1px solid #474747;border-radius:4px;font-weight:600;text-decoration:none}
+
+@media (min-width:960px){
+  .sec{padding-top:120px;padding-bottom:120px}
+  .split{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);column-gap:64px;align-items:start}
+  .split > .sec-head{position:sticky;top:48px}
+  .svc-list,.faq-list{margin-top:0}
+  .svc-list{display:grid;grid-template-columns:1fr 1fr;column-gap:48px}
+  .svc-main{grid-column:1/-1;padding-top:26px}
+  .svc-go{grid-column:1;grid-row:auto;justify-self:start;margin-top:6px;border:0;border-radius:0}
+  .svc-go span{position:static;width:auto;height:auto;clip:auto;border-bottom:1px solid #5e5e5e;padding-bottom:1px}
+  .svc-go:hover span{border-color:#fff}
+  .svc-main h3{font-size:60px}
+  .svc-main p{font-size:17px;max-width:52ch}
+  .works-grid{grid-template-columns:repeat(4,1fr);gap:16px}
+  .w-ba{grid-column:span 2;grid-row:span 2}
+  .ba img{aspect-ratio:auto}
+  .price-list{display:grid;grid-template-columns:1fr 1fr;column-gap:64px}
+  .films{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:80px;align-items:end}
+  .faq-list summary{font-size:28px}
+  .order{grid-template-columns:minmax(0,7fr) minmax(0,5fr);grid-template-areas:"head phone" "body phone";grid-template-rows:auto 1fr;column-gap:64px;row-gap:28px;align-items:start}
+  .of{grid-template-columns:1fr 1fr;column-gap:20px}
+  .of .full{grid-column:1/-1}
+  .phone{height:600px;border-radius:46px;padding:11px;align-self:center}
+  .phone-screen{border-radius:36px}
+  .chat-head{padding-top:34px}
+  .contacts{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:64px}
+  .contacts > .c-top{grid-column:1/-1}
+  .c-grid{grid-template-columns:1fr 1fr;align-content:start}
+  .map{aspect-ratio:auto;min-height:420px;margin-top:36px}
+  .foot{grid-template-columns:auto 1fr;align-items:center;column-gap:40px;padding:36px var(--g)}
+  .mbar{display:none}
+}
+
+@media (min-width:600px){
+  :root{--g:32px}
+  .hdr-phone span{display:inline}
+  .hdr-phone svg{display:none}
+  .hdr{gap:24px}
+  .ba{grid-template-columns:1fr 1fr}
+}
+
+@media (min-width:960px){
+  :root{--g:40px}
+  .hero{grid-template-columns:minmax(0,1fr) minmax(360px,1.05fr) minmax(0,1fr);column-gap:48px;
+    grid-template-rows:auto 1fr auto;
+    grid-template-areas:"hdr hdr hdr" "stage stage stage" "lead tint slogan";
+    padding:0 var(--g) 36px}
+  .hdr{padding:22px 0}
+  .logo{--h:52px}
+  .hdr .btn{min-height:48px;padding:0 24px;font-size:15px}
+  .stage{--g:40px}
+  .globe{width:min(92vw,128svh)}
+  .lead,.tint,.slogan{padding:0;align-self:end}
+  .lead p{font-size:16px}
+  .slogan{font-size:clamp(28px,2.6vw,40px);text-align:right;line-height:1}
+  .slogan br{display:inline}
+  .car-wrap{margin-top:calc(var(--fs) * -.5)}
+  .tint-label{max-width:9em}
+  .counter{font-size:clamp(64px,6vw,92px)}
+  .tint-head{margin-bottom:2px}
+  .warn{position:absolute;left:0;right:0;top:100%}
+}
+
+/* телефон: тонировка строкой, остальные услуги плитками, плитка нажимается целиком */
+@media (max-width:959px){
+  .svc-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;border-top:0}
+  .svc-main,.svc-item:last-child{grid-column:1/-1}
+  .svc-main{padding-top:0;border-bottom:0}
+  .svc-item:not(.svc-main){position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr auto;padding:14px;background:var(--card);border:0;border-radius:4px}
+  .svc-item:not(.svc-main) h3{font-size:20px}
+  .svc-item:not(.svc-main) p{font-size:13px;line-height:1.35}
+  .svc-item:not(.svc-main) .svc-go{grid-column:1;grid-row:auto;justify-self:start;min-width:0;min-height:0;margin-top:8px;border:0}
+  .svc-item:not(.svc-main) .svc-go::after{content:"";position:absolute;inset:0}
+  /* макет телефона обрезан снизу и стоит на нижнем краю блока */
+  .phone{margin-bottom:-72px}
+}
+
+/* загрузочный экран: 25vh = tan 14° × высота, край шторки идёт под наклоном кнопок */
+.loader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--bg);
+  clip-path:polygon(0 0,100% 0,100% 100%,-25vh 100%);transition:clip-path .7s cubic-bezier(.65,0,.35,1);
+  animation:loader-off 0s 5s forwards} /* страховка: если скрипт упал, экран всё равно исчезнет */
+.loader.out{clip-path:polygon(calc(100% + 25vh) 0,calc(100% + 25vh) 0,calc(100% + 25vh) 100%,100% 100%)}
+.loader img{display:block;width:min(72vw,56vh,440px);height:auto;mix-blend-mode:lighten;/* фон картинки на 1–2 тона темнее страницы, без этого виден квадрат */animation:loader-in .7s cubic-bezier(.16,1,.3,1) both}
+@keyframes loader-in{from{clip-path:polygon(0 0,0 0,-25% 100%,-25% 100%)}to{clip-path:polygon(0 0,125% 0,100% 100%,-25% 100%)}}
+@keyframes loader-off{to{visibility:hidden}}
+
+@media (prefers-reduced-motion:reduce){
+  #tint,#haze,.warn,.btn::before,.bubble,.mbar,.faq-list summary::after,.counter{transition:none}
+  .loader{display:none}
+}
+
+/* плавное раскрытие ответов; где не поддерживается, открывается как раньше */
+@media (prefers-reduced-motion:no-preference){
+  @supports (interpolate-size:allow-keywords){
+    .faq-list details{interpolate-size:allow-keywords}
+    .faq-list details::details-content{height:0;overflow:clip;transition:height .3s ease,content-visibility .3s allow-discrete}
+    .faq-list details[open]::details-content{height:auto}
+  }
+}
+</style>
+<noscript><style>.loader{display:none}</style></noscript>
+</head>
+<body>
+
+<div class="loader" id="loader" aria-hidden="true"><img src="logo.png" width="640" height="640" alt=""></div>
+
+<div class="hero-track" id="top">
+<section class="hero" aria-labelledby="h1">
+  <header class="hdr">
+    <a class="logo" href="#top" aria-label="Blackton, на главную"></a>
+    <a class="hdr-phone" href="tel:+79026701490" aria-label="Позвонить: +7 (902) 670-14-90">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span>+7 (902) 670-14-90</span>
+    </a>
+    <a class="btn" href="#zayavka">Записаться</a>
+  </header>
+
+  <p class="slogan">Стёкла темнее, <br>машина строже</p>
+
+  <div class="stage">
+    <svg class="globe" viewBox="-100 -100 200 200" aria-hidden="true">
+      <g stroke-width="1" vector-effect="non-scaling-stroke">
+        <circle r="98" vector-effect="non-scaling-stroke"/>
+        <ellipse rx="86" ry="98" vector-effect="non-scaling-stroke"/>
+        <ellipse rx="58" ry="98" vector-effect="non-scaling-stroke"/>
+        <ellipse rx="26" ry="98" vector-effect="non-scaling-stroke"/>
+        <line y1="-98" y2="98" vector-effect="non-scaling-stroke"/>
+        <line x1="-98" x2="98" vector-effect="non-scaling-stroke"/>
+        <line x1="-92.3" x2="92.3" y1="-33" y2="-33" vector-effect="non-scaling-stroke"/>
+        <line x1="-92.3" x2="92.3" y1="33" y2="33" vector-effect="non-scaling-stroke"/>
+        <line x1="-72.4" x2="72.4" y1="-66" y2="-66" vector-effect="non-scaling-stroke"/>
+        <line x1="-72.4" x2="72.4" y1="66" y2="66" vector-effect="non-scaling-stroke"/>
+      </g>
+    </svg>
+
+    <h1 class="word" id="h1">Тонировка<span class="sr"> и детейлинг в Йошкар-Оле</span></h1>
+
+    <div class="car-wrap">
+      <!-- фото-заглушка: сгенерировано, не работа студии; стёкла обведены по car-cut.webp 1774×887 (фон уже прозрачный) -->
+      <svg class="car" viewBox="20 40 1740 830" role="img" aria-label="Иллюстрация: тёмный кроссовер">
+        <defs>
+          <clipPath id="emblem"><ellipse cx="295" cy="436" rx="66" ry="32"/></clipPath>
+          <clipPath id="mirrorTxt"><rect x="1136" y="239" width="92" height="15"/></clipPath>
+          <path id="glass" d="M505 268L560 215L630 160L705 117L850 106L1000 100L1088 97L1035 190L985 268Z M1050 267L1072 215L1100 145L1125 102L1245 97L1277 270Z M1300 100L1437 130L1495 265L1322 272Z M1458 132L1525 148L1585 225L1545 255L1515 262Z"/>
+          <path id="mirror" d="M1080 268L1086 240L1100 215L1150 207L1205 215L1225 245L1222 268L1180 290L1100 290Z"/>
+          <mask id="glassMask"><use href="#glass" fill="#fff"/><use href="#mirror" fill="#000"/></mask>
+          <radialGradient id="floorShadow" cx=".5" cy=".5" r=".5"><stop offset=".55" stop-color="#000" stop-opacity=".8"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+          <radialGradient id="contactShadow" cx=".5" cy=".5" r=".5"><stop offset=".6" stop-color="#000"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+        </defs>
+        <!-- тень по перспективе: две полосы вдоль линий колёс и пятна в точках касания (замерено по car-cut.webp: y 813, 858, 788) -->
+        <ellipse cx="562" cy="822" rx="470" ry="44" transform="rotate(3.8 562 822)" fill="url(#floorShadow)"/>
+        <ellipse cx="1240" cy="808" rx="460" ry="44" transform="rotate(-5.9 1240 808)" fill="url(#floorShadow)"/>
+        <ellipse cx="230" cy="811" rx="125" ry="11" fill="url(#contactShadow)"/>
+        <ellipse cx="905" cy="856" rx="150" ry="13" fill="url(#contactShadow)"/>
+        <ellipse cx="1585" cy="786" rx="100" ry="10" fill="url(#contactShadow)"/>
+        <image href="car-cut.webp" width="1774" height="887"/>
+        <!-- закрываем эмблему узором решётки, надпись на зеркале — куском зеркала, значки на дисках — заглушками -->
+        <image href="car-cut.webp" width="1774" height="887" x="-100" clip-path="url(#emblem)"/>
+        <image href="car-cut.webp" width="1774" height="887" y="14" clip-path="url(#mirrorTxt)"/>
+        <circle cx="935" cy="665" r="17" fill="#1c1c1c" stroke="#555" stroke-width="2"/>
+        <circle cx="1626" cy="632" r="11" fill="#1c1c1c" stroke="#555" stroke-width="1.5"/>
+        <g mask="url(#glassMask)">
+          <use id="haze" href="#glass" fill="#9aa4a9" style="mix-blend-mode:screen"/>
+          <use id="tint" href="#glass" fill="#030303"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="tint">
+    <div class="tint-head">
+      <label class="tint-label" for="vltRange">Светопропускание стёкол</label>
+      <output class="counter" for="vltRange"><span id="vltNum">100</span><small>%</small></output>
+    </div>
+    <input class="range" id="vltRange" type="range" min="5" max="100" step="1" value="100">
+    <div class="scale" aria-hidden="true"><span>5%</span><span class="m70">70%</span><span>100%</span></div>
+    <p class="warn" id="warn" role="status">На передних стёклах ниже 70% нельзя</p>
+  </div>
+
+  <div class="lead">
+    <p>Тонировка, антигравийная плёнка, полировка и химчистка в Йошкар-Оле. Сдвиньте <em>звезду</em> и подберите затемнение до записи.</p>
+    <a class="btn" href="#zayavka">Записаться к мастеру</a>
+  </div>
+</section>
+</div>
+
+<main>
+<!-- 02 услуги -->
+<section class="sec line split" id="uslugi" aria-labelledby="svc-h">
+  <div class="sec-head">
+    <p class="kicker">Услуги</p>
+    <h2 class="h2" id="svc-h">Что делаем</h2>
+    <p class="sec-lead">Выберите услугу — она сама подставится в заявку.</p>
+  </div>
+  <ol class="svc-list">
+    <li class="svc-item svc-main">
+      <h3>Тонировка и снятие тонировки</h3>
+      <p>Задняя полусфера и снятие старой плёнки. Работаем с плёнками SUN CONTROL, STABLEPRO и Tiqqo4pro.</p>
+      <a class="svc-go" href="#zayavka" data-service="Тонировка и снятие тонировки"><span>В заявку</span> →</a>
+    </li>
+    <li class="svc-item">
+      <h3>Антигравийная плёнка</h3>
+      <p>Полиуретановая плёнка на кузов и фары против сколов.</p>
+      <a class="svc-go" href="#zayavka" data-service="Антигравийная плёнка"><span>В заявку</span> →</a>
+    </li>
+    <li class="svc-item">
+      <h3>Полировка кузова и фар</h3>
+      <p>Глубокая полировка лака и оптики, после — твёрдый воск.</p>
+      <a class="svc-go" href="#zayavka" data-service="Полировка кузова и фар"><span>В заявку</span> →</a>
+    </li>
+    <li class="svc-item">
+      <h3>Химчистка салона</h3>
+      <p>Сиденья и дверные карты.</p>
+      <a class="svc-go" href="#zayavka" data-service="Химчистка салона"><span>В заявку</span> →</a>
+    </li>
+    <li class="svc-item">
+      <h3>Шумоизоляция</h3>
+      <p>Шумоизоляция салона.</p>
+      <a class="svc-go" href="#zayavka" data-service="Шумоизоляция"><span>В заявку</span> →</a>
+    </li>
+    <li class="svc-item">
+      <h3>Автозвук</h3>
+      <p>Установка автозвука.</p>
+      <a class="svc-go" href="#zayavka" data-service="Автозвук"><span>В заявку</span> →</a>
+    </li>
+    <li class="svc-item">
+      <h3>LED-лампы</h3>
+      <p>Светодиодные лампы в ходовые огни и ближний свет.</p>
+      <a class="svc-go" href="#zayavka" data-service="LED-лампы"><span>В заявку</span> →</a>
+    </li>
+    <li class="svc-item">
+      <h3>Сигнализация</h3>
+      <p>Установка автосигнализации.</p>
+      <a class="svc-go" href="#zayavka" data-service="Сигнализация"><span>В заявку</span> →</a>
+    </li>
+  </ol>
+</section>
+
+<!-- 03 работы -->
+<section class="sec line" id="raboty" aria-labelledby="works-h">
+  <p class="kicker">Работы</p>
+  <h2 class="h2" id="works-h">Как приехала — как уехала</h2>
+  <p class="sec-lead">Фото из <a href="https://vk.ru/blackton12" target="_blank" rel="noopener">группы студии во ВКонтакте</a>.</p>
+  <div class="works-grid">
+    <figure class="w w-ba">
+      <div class="ba">
+        <div><img src="https://pp.userapi.com/c824700/v824700766/116433/An7dtlkmX5s.jpg" alt="Мутная фара до работы" loading="lazy" referrerpolicy="no-referrer"><b>Как приехала</b></div>
+        <div><img src="https://pp.userapi.com/c824700/v824700766/11643d/ChqupyWsApo.jpg" alt="Прозрачная фара после работы" loading="lazy" referrerpolicy="no-referrer"><b>Как уехала</b></div>
+      </div>
+      <figcaption>Фара до и после</figcaption>
+    </figure>
+    <figure class="w"><div class="ph"><b>Нужно фото</b>тонировка задней полусферы, вид сбоку</div><figcaption>Тонировка</figcaption></figure>
+    <figure class="w"><div class="ph"><b>Нужно фото</b>плёнка на фарах или капоте</div><figcaption>Антигравийная плёнка</figcaption></figure>
+    <figure class="w"><div class="ph"><b>Нужно фото</b>сиденье до и после</div><figcaption>Химчистка</figcaption></figure>
+    <figure class="w"><div class="ph"><b>Нужно фото</b>двери в работе</div><figcaption>Шумоизоляция</figcaption></figure>
+  </div>
+</section>
+
+<!-- 04 цены -->
+<section class="sec line" id="ceny" aria-labelledby="price-h">
+  <div class="price-top">
+    <div>
+      <p class="kicker">Цены</p>
+      <h2 class="h2" id="price-h">Сколько стоит</h2>
+    </div>
+  </div>
+  <ul class="price-list">
+    <li><span>Тонировка задней полусферы</span><span class="dots"></span><span class="val">от 4 000 ₽</span><span class="tag">пример</span></li>
+    <li><span>Снятие тонировки</span><span class="dots"></span><span class="val">от 1 000 ₽</span><span class="tag">пример</span></li>
+    <li><span>Антигравийная плёнка на фары</span><span class="dots"></span><span class="val">от 3 000 ₽</span><span class="tag">пример</span></li>
+    <li><span>Антигравийная плёнка на кузов</span><span class="dots"></span><span class="val">от 40 000 ₽</span><span class="tag">пример</span></li>
+    <li><span>Полировка фар</span><span class="dots"></span><span class="val">от 1 500 ₽</span><span class="tag">пример</span></li>
+    <li><span>Полировка кузова</span><span class="dots"></span><span class="val">от 10 000 ₽</span><span class="tag">пример</span></li>
+    <li><span>Химчистка салона</span><span class="dots"></span><span class="val">от 6 000 ₽</span><span class="tag">пример</span></li>
+    <li><span>Шумоизоляция дверей</span><span class="dots"></span><span class="val">от 8 000 ₽</span><span class="tag">пример</span></li>
+    <li><span>Установка LED-ламп</span><span class="dots"></span><span class="val">от 500 ₽</span><span class="tag">пример</span></li>
+    <li><span>Установка сигнализации</span><span class="dots"></span><span class="val">от 5 000 ₽</span><span class="tag">пример</span></li>
+  </ul>
+</section>
+
+<!-- 05 плёнки -->
+<section class="sec films" id="plenki" aria-labelledby="films-h">
+  <div>
+    <p class="kicker">Плёнки и материалы</p>
+    <h2 class="h2" id="films-h">На чём работаем</h2>
+    <ul class="film-names" aria-label="Плёнки для тонировки">
+      <li>SUN CONTROL <small>тонировка</small></li>
+      <li>STABLEPRO <small>тонировка</small></li>
+      <li>Tiqqo4pro <small>тонировка</small></li>
+    </ul>
+  </div>
+  <div>
+    <ul class="mats">
+      <li><b>Полиуретановая плёнка</b><p>Антигравийная защита кузова и фар.</p></li>
+      <li><b>Твёрдый воск</b><p>Защищает лак после полировки.</p></li>
+      <li><b>Подбор плёнки</b><p>Какую взять под вашу машину, мастер скажет на месте.</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 07 вопросы -->
+<section class="sec line split" id="voprosy" aria-labelledby="faq-h">
+  <div class="sec-head">
+    <p class="kicker">Вопросы</p>
+    <h2 class="h2" id="faq-h">Частые вопросы</h2>
+  </div>
+  <div class="faq-list">
+    <details>
+      <summary>Какую тонировку можно по закону?</summary>
+      <div class="faq-a">
+        <p>Лобовое и передние боковые стёкла должны пропускать не меньше 70% света — это требование техрегламента ТР ТС 018/2011. Заднюю полусферу можно делать темнее.</p>
+        <p>Заводское стекло само пропускает не 100% света, поэтому даже светлая плёнка на передних стёклах может опустить итог ниже 70%.</p>      </div>
+    </details>
+    <details>
+      <summary>Сколько времени займёт работа?</summary>
+      <div class="faq-a">
+        <p>Зависит от машины и услуги. Точное время мастер скажет при записи.</p>      </div>
+    </details>
+    <details>
+      <summary>Как ухаживать после оклейки?</summary>
+      <div class="faq-a">
+        <p>После тонировки первые дни не опускайте стёкла и не мойте их изнутри. После антигравийной плёнки не мойте машину под высоким давлением, пока плёнка не схватится.</p>      </div>
+    </details>
+    <details>
+      <summary>Можно снять старую тонировку?</summary>
+      <div class="faq-a"><p>Да, снятие тонировки — отдельная услуга.</p></div>
+    </details>
+    <details>
+      <summary>Нужна запись?</summary>
+      <div class="faq-a"><p>Да, работаем по предварительной записи. Оставьте заявку или позвоните.</p></div>
+    </details>
+    <details>
+      <summary>Как оплатить?</summary>
+      <div class="faq-a">
+        <p>Наличными.</p>      </div>
+    </details>
+  </div>
+</section>
+
+<!-- 08 заявка -->
+<section class="sec order" id="zayavka" aria-labelledby="order-h">
+  <div class="order-head">
+    <p class="kicker">Заявка</p>
+    <h2 class="h2" id="order-h">Заявка мастеру</h2>
+    <p class="sec-lead">Мастер перезвонит и подтвердит время.</p>
+  </div>
+
+  <div class="phone" id="phone" aria-label="Так сообщение увидит мастер">
+    <div class="phone-screen" id="phoneScreen">
+      <div class="chat-head"><span class="chat-ava" aria-hidden="true"></span><span class="chat-name">Blackton12<span class="chat-sub">мастер</span></span></div>
+      <div class="chat" id="chat" aria-live="polite"><p class="chat-empty">Здесь появится ваше сообщение мастеру</p></div>
+    </div>
+  </div>
+
+  <div class="order-body">
+    <form class="of" id="orderForm" novalidate>
+      <label>Марка и модель
+        <input name="car" maxlength="60" autocomplete="off" placeholder="Например, Camry" aria-describedby="e-car" required>
+        <span class="ferr" id="e-car"></span>
+      </label>
+      <label>Услуга
+        <select name="service" aria-describedby="e-service" required>
+          <option value="" selected disabled>Выберите услугу</option>
+          <option>Тонировка и снятие тонировки</option>
+          <option>Антигравийная плёнка</option>
+          <option>Полировка кузова и фар</option>
+          <option>Химчистка салона</option>
+          <option>Шумоизоляция</option>
+          <option>Автозвук</option>
+          <option>LED-лампы</option>
+          <option>Сигнализация</option>
+          <option>Нужна консультация</option>
+        </select>
+        <span class="ferr" id="e-service"></span>
+      </label>
+      <label>Удобное время
+        <input name="time" maxlength="60" autocomplete="off" placeholder="Например, суббота после 12">
+      </label>
+      <label>Телефон
+        <input name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="+7 900 000-00-00" aria-describedby="e-phone" required>
+        <span class="ferr" id="e-phone"></span>
+      </label>
+      <button class="btn btn-dark full" type="submit">Отправить мастеру <i aria-hidden="true"></i></button>
+      <p class="demo-note full">Демо: форма никуда не отправляет данные. Отправку в Telegram или VK подключим после согласования.</p>
+    </form>
+    <div class="done" id="orderDone" hidden>
+      <p>Готово. Так заявка придёт мастеру, когда подключим отправку. Сейчас данные никуда не ушли.</p>
+      <button class="link-btn" type="button" id="orderAgain">Заполнить заново</button>
+    </div>
+  </div>
+</section>
+
+<!-- 09 контакты -->
+<section class="sec contacts" id="kontakty" aria-labelledby="c-h">
+  <div class="c-top">
+    <p class="kicker">Контакты</p>
+    <h2 class="sr" id="c-h">Контакты</h2>
+    <a class="big-num" href="tel:+78362901490" aria-label="Позвонить: +7 (8362) 90-14-90">90<span aria-hidden="true">✦</span>14<span aria-hidden="true">✦</span>90</a>
+  </div>
+  <div class="c-grid">
+    <div class="c-item">
+      <h3>Адрес</h3>
+      <p>Йошкар-Ола, Комсомольская, 9, 1 этаж</p>
+    </div>
+    <div class="c-item">
+      <h3>Режим</h3>
+      <p>С 9:00, по предварительной записи</p>
+    </div>
+    <div class="c-item">
+      <h3>Телефоны</h3>
+      <ul>
+        <li><a href="tel:+79026701490">+7 (902) 670-14-90</a></li>
+        <li><a href="tel:+79026801490">+7 (902) 680-14-90</a></li>
+        <li><a href="tel:+78362901490">+7 (8362) 90-14-90</a></li>
+      </ul>
+    </div>
+    <div class="c-item">
+      <h3>Написать</h3>
+      <div class="c-links">
+        <a class="pill" href="https://vk.ru/blackton12" target="_blank" rel="noopener">ВКонтакте</a>
+        <a class="pill" href="https://t.me/blackton12" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </div>
+    <div class="c-item">
+      <h3>Как доехать</h3>
+      <div class="c-links">
+        <a class="pill" href="https://2gis.ru/yoshkarola/firm/70000001018235690" target="_blank" rel="noopener">2ГИС</a>
+        <a class="pill" href="https://yandex.ru/maps/?pt=47.905478,56.653822&amp;z=17" target="_blank" rel="noopener">Яндекс Карты</a>
+      </div>
+    </div>
+  </div>
+  <div class="map">
+    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=47.8995%2C56.6513%2C47.9115%2C56.6563&amp;layer=mapnik&amp;marker=56.653822%2C47.905478" title="Карта: Комсомольская, 9" loading="lazy"></iframe>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <strong>Blackton12</strong>
+  <p>Демо-версия сайта для согласования. Цены, машина на первом экране и часть текстов — примеры.</p>
+</footer>
+
+<nav class="mbar" id="mbar" aria-label="Быстрые действия">
+  <a class="mbar-call" href="tel:+79026701490">Позвонить</a>
+  <a class="btn" href="#zayavka">Записаться</a>
+</nav>
+
+<script>
+const loaderGone = new Promise(done => {
+  const el = document.getElementById('loader');
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const loaded = new Promise(r => document.readyState === 'complete' ? r() : addEventListener('load', r, { once: true }));
+  const leave = () => { el.classList.add('out'); document.body.classList.add('car-go'); setTimeout(() => el.remove(), 750); setTimeout(done, 1300); }; // done — когда машина остановилась
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.remove(); done(); return; }
+  // минимум 1,1 с, чтобы логотип проявился; максимум 3 с, даже если сеть зависла
+  Promise.race([Promise.all([wait(1100), loaded]), wait(3000)]).then(leave);
+});
+
+(() => {
+  const range = document.getElementById('vltRange');
+  const num = document.getElementById('vltNum');
+  const tint = document.getElementById('tint');
+  const haze = document.getElementById('haze');
+  const warn = document.getElementById('warn');
+  const out = num.closest('output');
+  const car = document.querySelector('.car');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let jolt;
+
+  // машина вздрагивает при переходе через 70%; composite add — чтобы не сбить заезд
+  function joltCar() {
+    if (reduce) return;
+    if (jolt) jolt.cancel(); // при быстрых рывках звезды амплитуды не складываются
+    jolt = car.animate([
+      { translate: '0 0', rotate: '0deg' },
+      { translate: '-.8% 0', rotate: '-.25deg' },
+      { translate: '.6% 0', rotate: '.2deg' },
+      { translate: '-.3% 0', rotate: '-.1deg' },
+      { translate: '0 0', rotate: '0deg' }
+    ], { duration: 320, easing: 'ease-out', composite: 'add' });
+  }
+
+  function setVLT(v) {
+    v = Math.round(Math.min(100, Math.max(5, v)));
+    range.value = v;
+    num.textContent = v;
+    // на фото стёкла уже тёмные: при 100% высветляем «прозрачным» слоем, дальше затемняем
+    haze.style.opacity = ((v - 5) / 95 * .5).toFixed(3);
+    tint.style.opacity = ((1 - v / 100) * .92).toFixed(3);
+    const low = v < 70;
+    if (warn.classList.contains('on') !== low) { warn.classList.toggle('on', low); out.classList.toggle('low', low); joltCar(); }
+  }
+
+  // стёкла меняются только когда двигают звезду, прокрутка их не трогает
+  range.addEventListener('input', () => setVLT(+range.value));
+  setVLT(+range.value);
+
+  // автодемо при загрузке: 100 → 30 → 70, любое касание звезды отменяет
+  const ease = t => t < .5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
+  const path = t => t < 1400 ? 100 - 70 * ease(t / 1400) : t < 1650 ? 30 : 30 + 40 * ease(Math.min(1, (t - 1650) / 900));
+  console.assert(path(0) === 100 && path(1500) === 30 && path(2550) === 70 && path(9999) === 70, 'path');
+
+  if (!reduce) {
+    let t0, raf, stopped;
+    const stop = () => { stopped = true; cancelAnimationFrame(raf); out.removeAttribute('aria-live'); };
+    const step = now => {
+      t0 = t0 || now;
+      setVLT(path(now - t0));
+      if (now - t0 < 2550) raf = requestAnimationFrame(step); else stop();
+    };
+    out.setAttribute('aria-live', 'off'); // output сам объявляет изменения, скринридер прочитал бы каждый кадр
+    loaderGone.then(() => { if (!stopped) raf = requestAnimationFrame(step); });
+    ['pointerdown', 'keydown', 'input'].forEach(ev => range.addEventListener(ev, stop, { once: true }));
+  }
+})();
+
+(() => {
+  const form = document.getElementById('orderForm');
+  const f = form.elements;
+  const done = document.getElementById('orderDone');
+  const chat = document.getElementById('chat');
+  const phone = document.getElementById('phone');
+  const screen = document.getElementById('phoneScreen');
+  const emptyChat = chat.innerHTML;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // +7 и 10 цифр; 8 в начале меняем на 7, 10 цифр без кода страны дополняем
+  function normPhone(v) {
+    let d = String(v).replace(/\D/g, '');
+    if (d.length === 10 && !/^[78]/.test(d)) d = '7' + d;
+    if (d.length !== 11 || !/^[78]/.test(d)) return null;
+    return `+7 (${d.slice(1, 4)}) ${d.slice(4, 7)}-${d.slice(7, 9)}-${d.slice(9)}`; // неразрывные пробелы
+  }
+  const clean = s => String(s).replace(/\s+/g, ' ').trim().slice(0, 60);
+  console.assert(normPhone('8 (902) 670-14-90') === '+7 (902) 670-14-90' && normPhone('9026701490') === '+7 (902) 670-14-90'
+    && normPhone('+7 902 670 14 9') === null && normPhone('12345678901') === null, 'normPhone');
+
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-service]');
+    if (a) { f.service.value = a.dataset.service; setErr(f.service, ''); }
+  });
+
+  function setErr(input, msg) {
+    input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    document.getElementById(input.getAttribute('aria-describedby')).textContent = msg;
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const car = clean(f.car.value), time = clean(f.time.value), tel = normPhone(f.phone.value);
+    setErr(f.car, car ? '' : 'Укажите марку и модель');
+    setErr(f.service, f.service.value ? '' : 'Выберите услугу');
+    setErr(f.phone, tel ? '' : 'Проверьте номер: нужно 11 цифр, например +7 900 000-00-00');
+    const bad = form.querySelector('[aria-invalid="true"]');
+    if (bad) { bad.focus(); return; }
+    // текст собираем через textContent — ввод не попадает в разметку
+    const text = [car, f.service.value.toLowerCase(), time, tel].filter(Boolean).join(', ');
+    fly(() => showMessage(text));
+  });
+
+  function showMessage(text) {
+    const b = document.createElement('p');
+    b.className = 'bubble';
+    b.textContent = text;
+    const t = document.createElement('span');
+    t.textContent = 'сейчас';
+    b.append(t);
+    chat.replaceChildren(b);
+    form.hidden = true;
+    done.hidden = false;
+    requestAnimationFrame(() => requestAnimationFrame(() => b.classList.add('in')));
+  }
+
+  function fly(cb) {
+    if (reduce) { cb(); return; }
+    const go = () => {
+      const a = form.getBoundingClientRect(), s = screen.getBoundingClientRect();
+      const btn = form.querySelector('[type=submit]').getBoundingClientRect();
+      if (!a.width || !s.width) { cb(); return; }
+      const k = Math.min(s.width / a.width, s.height / a.height) * .7;
+      const dx = s.left + s.width / 2 - (a.left + a.width / 2), dy = s.top + s.height / 2 - (a.top + a.height / 2);
+      const anim = form.animate([
+        { transform: 'none', opacity: 1 },
+        { transform: `translate(${dx}px, ${dy}px) scale(${k})`, opacity: 0 }
+      ], { duration: 750, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' });
+
+      const star = document.createElement('div');
+      star.className = 'fly-star';
+      const sx = btn.right - 36, sy = btn.top + btn.height / 2 - 15;
+      star.style.left = sx + 'px'; star.style.top = sy + 'px';
+      document.body.append(star);
+      star.animate([
+        { transform: 'none', opacity: 1 },
+        { transform: `translate(${s.left + s.width / 2 - sx - 15}px, ${s.top + s.height * .6 - sy}px) rotate(320deg) scale(.6)`, opacity: .2 }
+      ], { duration: 900, easing: 'cubic-bezier(.5,0,.2,1)' }).onfinish = () => star.remove();
+
+      anim.onfinish = () => { cb(); anim.cancel(); };
+    };
+    // на телефоне экран с чатом ниже формы: докручиваем так, чтобы были видны оба
+    const r = phone.getBoundingClientRect();
+    if (r.top < 0 || r.bottom > innerHeight) { phone.scrollIntoView({ behavior: 'smooth', block: 'end' }); setTimeout(go, 600); }
+    else go();
+  }
+
+  document.getElementById('orderAgain').addEventListener('click', () => {
+    form.reset();
+    form.querySelectorAll('[aria-invalid]').forEach(i => i.removeAttribute('aria-invalid'));
+    chat.innerHTML = emptyChat;
+    done.hidden = true;
+    form.hidden = false;
+    f.car.focus();
+  });
+
+  // нижняя панель на телефоне: после первого экрана, кроме заявки и контактов
+  const bar = document.getElementById('mbar');
+  const seen = new Set();
+  let pastHero = false;
+  const upd = () => bar.classList.toggle('on', pastHero && seen.size === 0);
+  new IntersectionObserver(([e]) => { pastHero = !e.isIntersecting; upd(); })
+    .observe(document.querySelector('.hero-track'));
+  const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)); upd(); });
+  ['zayavka', 'kontakty'].forEach(id => io.observe(document.getElementById(id)));
+})();
+</script>
+</body>
+</html>
